@@ -1,0 +1,31 @@
+<ion-content fullscreen>
+  <div *ngIf="!isPlaying && !level">
+    <h2>Seleccione el nivel de dificultad</h2>
+    <ion-button expand="block" (click)="selectLevel('easy')">Fácil</ion-button>
+    <ion-button expand="block" (click)="selectLevel('medium')">Medio</ion-button>
+    <ion-button expand="block" (click)="selectLevel('hard')">Difícil</ion-button>
+  </div>
+
+  <div *ngIf="isPlaying">
+    <h2>Tiempo: {{ timeElapsed }} segundos</h2>
+    <div class="grid">
+      <div *ngFor="let card of grid; let i = index" (click)="flipCard(i)">
+        <img *ngIf="card.flipped || card.matched" [src]="card.image">
+        <div *ngIf="!card.flipped && !card.matched" class="back"></div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isPlaying && level">
+    <h2>Juego Completado en {{ timeElapsed }} segundos</h2>
+    <h3>Mejores 5 Resultados</h3>
+    <ion-list>
+      <ion-item *ngFor="let score of highscores">
+        <ion-label>
+          Tiempo: {{ score.time }} segundos - Fecha: {{ score.date.toDate() | date }}
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" (click)="level = null">Volver a elegir nivel</ion-button>
+  </div>
+</ion-content>
