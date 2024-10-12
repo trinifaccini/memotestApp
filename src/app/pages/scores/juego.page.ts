@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { addDoc, collection, Firestore, getDocs, limit, orderBy, query } from '@angular/fire/firestore';
 import { IonicModule } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   standalone: true,
@@ -12,8 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
   imports: [IonicModule, CommonModule]
 })
 
-export class GamePage implements OnInit{
-
+export class GamePage {
   level: string | null = null;
   images: string[] = [];
   grid: { image: string, flipped: boolean, matched: boolean }[] = [];
@@ -24,18 +22,12 @@ export class GamePage implements OnInit{
   firstCardIndex: number | null = null;
   highscores: any[] = [];
   isPlaying = false;
-  isModalOpen = false;
-  isLoadingScores = false;
 
   easyImages = ['assets/buttons/animals/1.png', 'assets/buttons/animals/2.png', 'assets/buttons/animals/3.png'];
   mediumImages = ['assets/buttons/tools/tools1.png', 'assets/buttons/tools/tools2.png', 'assets/buttons/tools/tools3.png', 'assets/buttons/tools/tools4.png', 'assets/buttons/tools/tools5.png'];
   hardImages = ['assets/buttons/fruits/fruits1.png', 'assets/buttons/fruits/fruits2.png', 'assets/buttons/fruits/fruits3.png', 'assets/buttons/fruits/fruits4.png', 'assets/buttons/fruits/fruits5.png', 'assets/buttons/fruits/fruits6.png', 'assets/buttons/fruits/fruits7.png', 'assets/buttons/fruits/fruits8.png'];
 
-  constructor(private firestore: Firestore, private authService :AuthService) {}
-
-  ngOnInit(): void {
-    this.loadHighscores();
-  }
+  constructor(private firestore: Firestore) {}
 
   selectLevel(level: string) {
     this.level = level;
@@ -118,7 +110,6 @@ export class GamePage implements OnInit{
   async saveResult() {
     const scoresCollection = collection(this.firestore, 'scores');
     await addDoc(scoresCollection, {
-      // user: this.authService.currentUserSig().email,
       time: this.timeElapsed,
       level: this.level,
       date: new Date()
@@ -127,30 +118,12 @@ export class GamePage implements OnInit{
   }
 
   async loadHighscores() {
-    this.isLoadingScores = true;  // Empieza a cargar
     const scoresCollection = collection(this.firestore, 'scores');
     const q = query(scoresCollection, orderBy('time', 'asc'), limit(5));
     const querySnapshot = await getDocs(q);
-    
     this.highscores = [];
     querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      if (data && data['time'] !== undefined && data['date']) {
-        this.highscores.push(data);
-      } else {
-        console.warn('Datos de puntaje faltantes o inválidos:', data);
-      }
+      this.highscores.push(doc.data());
     });
-    this.isLoadingScores = false;  // Termina de cargar
-  }
-  
-  async openModal() {
-    await this.loadHighscores(); // Carga los datos antes de abrir
-    this.isModalOpen = true;
-  }
-  
-
-  closeModal() {
-    this.isModalOpen = false;
   }
 }

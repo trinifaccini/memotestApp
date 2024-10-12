@@ -1,65 +1,156 @@
 .login-content {
-    /* background-image: url('../../../assets/img/background.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;  */
+
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: hsl(329, 79%, 18%); /* Cambia este color según prefieras */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Estilo base para las líneas en movimiento */
+.moving-line {
+  position: absolute;
+  height: 5px;
+  background-color: rgba(255, 255, 255, 0.2);
+  animation: moveHorizontal 6s linear infinite;
+  z-index: 1; /* Coloca las líneas detrás */
+}
+
+  .title-container {
+
+    z-index: 2; /* Coloca el formulario al frente */
+    width: 90%;
     display: flex;
     flex-direction: column;
-    justify-content: start;
     align-items: center;
-    text-align: center;
+    padding-bottom: 20px;
   
-    .logo-container {
-      padding-top: 40px;
-      margin-bottom: 40px;
+    h1, h4 {
+      font-family: 'SixtyFour', sans-serif;
+      font-weight: bold;
+      z-index: 2; /* Coloca el formulario al frente */
+      width: 90%;
+    }
+  }
+
+  .login-form {
+    z-index: 2; /* Coloca el formulario al frente */
+  }
+
+
+  .login-button {
+    --background: #ae24aa;
+    --background-hover: #9ce0be;
+    --background-activated: #88f4be;
+    --background-focused: #88f4be;
   
-      .logo {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        margin-bottom: 10px;
-      }
+    --color: rgb(239, 239, 255);
   
-      h1 {
-        font-family: 'Poppins', sans-serif;
-        font-size: 24px;
-        font-weight: bold;
+    --border-radius: 0;
+    --border-color: #000;
+    --border-style: solid;
+    --border-width: 1px;
+  
+    /* --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25); */
+  
+    --ripple-color: deeppink;
+  
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+
+    font-family: "Outfit";
+  }
+
+
+  form {
+    width: 80%;
+    font-family: "Outfit";
+
+    
+    ion-item {
+      --background: hsl(329, 18%, 65%);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-family: "Outfit";
+
+      ion-label {
         color: #000;
-        letter-spacing: 0.05em;
-        font-family: "HalfTerm";
+        font-weight: bold;
+        font-family: "Outfit";
+
+      }
+
+      ion-input {
+        --placeholder-color: rgba(0, 0, 0, 0.479);
+        color: black;
+        font-family: "Outfit";
+
       }
     }
-  
-    form {
-      width: 80%;
-      font-family: "HalfTerm";
-      
-      ion-item {
-        --background: rgb(245, 249, 250);
-        border-radius: 8px;
-        margin-bottom: 20px;
 
-        ion-label {
-          color: #000;
-          font-weight: bold;
-          font-family: "HalfTerm";
-
-        }
-  
-        ion-input {
-          --placeholder-color: rgba(0, 0, 0, 0.479);
-          color: black;
-          font-family: "HalfTerm";
-
-        }
-      }
-  
-      ion-button {
-        color: warn;
-        border-radius: 8px;
-      }
-    }
-  
+   
   }
   
+
+.user-buttons {
+  display: flex; 
+  flex-direction: column;
+  width: 80%; 
+  z-index: 20;
+
+  ion-button {
+    --background: #7bae24;
+    --background-hover: #9ce0be;
+    --background-activated: #88f4be;
+    --background-focused: #88f4be;
+  
+    --color: rgb(239, 239, 255);
+  
+    --border-radius: 0;
+    --border-color: #000;
+    --border-style: solid;
+    --border-width: 1px;
+  
+    /* --box-shadow: 0 2px 6px 0 rgb(0, 0, 0, 0.25); */
+  
+    --ripple-color: deeppink;
+  
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+
+    font-family: "Outfit";
+  }
+}
+
+ion-button {
+  font-family: "Outfit";
+  
+}
+
+
+/* Líneas específicas con diferentes anchos, posiciones y velocidades */
+.line1 { width: 40%; top: 10%; animation-duration: 7s; }
+.line2 { width: 60%; top: 20%; animation-duration: 5s; }
+.line3 { width: 30%; top: 35%; animation-duration: 6.5s; }
+.line4 { width: 50%; top: 50%; animation-duration: 8s; }
+.line5 { width: 70%; top: 65%; animation-duration: 5.5s; }
+.line6 { width: 35%; top: 75%; animation-duration: 7.5s; }
+.line7 { width: 55%; top: 90%; animation-duration: 6s; }
+
+/* Animación de movimiento horizontal */
+@keyframes moveHorizontal {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
