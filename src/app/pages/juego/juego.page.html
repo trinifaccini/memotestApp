@@ -1,12 +1,12 @@
-<ion-content fullscreen>
+<ion-content fullscreen style="--padding: 25px 15px;">
   <div *ngIf="!isPlaying && !level" style="padding: 25px 15px;">
     <h2>Seleccione el nivel de dificultad</h2>
-    <ion-button expand="block" (click)="selectLevel('easy')">Fácil</ion-button>
-    <ion-button expand="block" (click)="selectLevel('medium')">Medio</ion-button>
-    <ion-button expand="block" (click)="selectLevel('hard')">Difícil</ion-button>
+    <ion-button expand="block" (click)="selectLevel('fácil')">Fácil</ion-button>
+    <ion-button expand="block" (click)="selectLevel('medio')">Medio</ion-button>
+    <ion-button expand="block" (click)="selectLevel('difícil')">Difícil</ion-button>
   </div>
 
-  <h2 *ngIf="isPlaying" style="text-align: center;">Tiempo: {{ timeElapsed }} segundos</h2>
+  <h2 *ngIf="isPlaying" style="text-align: center; width: 90%;">Tiempo: {{ timeElapsed }} segundos</h2>
 
   <div *ngIf="isPlaying" class="host">
     <div class="grid" 
@@ -22,14 +22,18 @@
     </div>
   </div>
 
-
-
-
-  <div *ngIf="!isPlaying && level">
-    <h2>Juego Completado en {{ timeElapsed }} segundos</h2>
-    <ion-button expand="block" (click)="level = null">Elegir nivel nuevamente</ion-button>
+  <div *ngIf="!isPlaying && level" style="padding: 25px 15px;">
+    <h2 style="text-align: center;">Juego Completado en {{ timeElapsed }} segundos</h2>
+    <ion-button expand="block" (click)="level = null" >Elegir nivel nuevamente</ion-button>
     <ion-button expand="block" (click)="openModal()">Ver mejores puntajes</ion-button>
   </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="square-fab" (click)="logout()">
+      <ion-icon name="log-out-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
 </ion-content>
 
 
@@ -38,40 +42,38 @@
   <div class="modal-content">
     <span class="close" (click)="isModalOpen = false" >&times;</span>
 
-    <h3 style="color: rgb(52, 4, 46); font-family: 'Outfit';">Mejores 5 puntajes</h3>
+    <h3 style="color: rgb(52, 4, 46); font-family: 'Outfit'; font-size: 1.2rem;">Mejores 5 puntajes en el nivel {{level}}</h3>
 
     <ion-list *ngIf="!isLoadingScores" style="background-color: rgb(255, 255, 255);" >
-      <ion-item *ngFor="let score of highscores"
-      style="
-        display: flex;
-        flex-direction: column;
-        background-color: #ffffff;
-        margin: 5px 0;
-        padding: 10px;
-        border-radius: 8px;">
-        <ion-label *ngIf="score?.time !== undefined && score?.date" 
-        style="  
-        font-size: 1rem; 
-        color: #333;
-        background-color: rgb(255, 255, 255);">
+      <div *ngFor="let score of highscores"
+        style="
+          background-color: #f7d3f1;
+          margin: 5px 0;
+          padding: 10px;
+          border-radius: 8px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          font-family: 'Outfit';">
+        
+        <div *ngIf="score?.time !== undefined" 
+          style="font-size: 0.8rem; color: #333; margin-bottom: 5px;">
           Tiempo: {{ score.time }} segundos
-        </ion-label>
+        </div>
 
-        <ion-label *ngIf="score?.time !== undefined && score?.date" 
-        style="  
-        font-size: 1rem; 
-        color: #333;
-        background-color: rgb(255, 255, 255);">
+        <div *ngIf="score?.date" 
+          style="font-size: 0.8rem; color: #333; margin-bottom: 5px;">
           Fecha: {{ score.date.toDate() | date }}
-        </ion-label>
-        <ion-label *ngIf="score?.time !== undefined && score?.date" 
-        style="  
-        font-size: 1rem; 
-        color: #333;
-        background-color: rgb(255, 255, 255);">
-          Usuario: {{ score.user}}
-        </ion-label>
-      </ion-item>
+        </div>
+
+        <div *ngIf="score?.user" 
+          style="font-size: 0.8rem; color: #333;">
+          Usuario: {{ score.user }}
+        </div>
+  
+      </div>
+
+    
     </ion-list>
 
   </div>

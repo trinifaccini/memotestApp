@@ -37,8 +37,7 @@
     </form>
     
     <div class="user-buttons">
-
-      <ion-button *ngFor="let user of users" expand="block" type="button" (click)="autocompleCredentials(user.id)"  style="margin-top: 20px; " >
+      <ion-button *ngFor="let user of users" expand="block" type="button" (click)="autocompleCredentials(user.id-1)"  style="margin-top: 20px; " >
         {{user.perfil}}
       </ion-button>
 

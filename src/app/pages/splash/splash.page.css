@@ -1,6 +1,6 @@
 /* Hacer que el fondo de la página sea negro */
 .container {
-  background-color: #C3F5F4;
+  background-color: #52092f;
   margin: 0;
   height: 100vh; /* Ocupa toda la altura de la ventana */
   display: flex;
@@ -35,7 +35,7 @@
 }
 
 h1 {
-  color: black;
+  color: white;
   font-family: "HalfTerm"; 
 
 }

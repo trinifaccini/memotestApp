@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
+import { users } from 'src/app/users';
 
 const authReponses = {
   //"invalid-email": "No existe un usuario registrado con esa dirección",
@@ -18,32 +19,6 @@ const authReponses = {
   "invalid-credential": "No existe ese correo o esa combinacion de correo y contraseña",
   "too-many-requests": "Muchas solicitudes, intente en unos minutos",
 }
-
-const users = [
-  {
-    id: 1,
-    username: "pperez12",
-    email: "admin@admin.com",
-    password: "111111",
-    perfil: "ADMINITRADOR"
-  },
-  {
-    id: 2,
-    username: "martinapok",
-    email: "invitado@invitado.com",
-    password: "222222",
-    perfil: "INVITADO"
-
-  },
-  {
-    id: 3,
-    username: "tomi_acu",
-    email: "usuario@usuario.com",
-    password: "333333",
-    perfil: "USUARIO"
-
-  }
-]
 
 
 @Component({

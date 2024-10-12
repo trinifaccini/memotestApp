@@ -1,18 +1,18 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.traductor',
-  appName: 'Traductor',
+  appId: 'io.ionic.memotest',
+  appName: 'Memotest',
   webDir: 'www',
-    // plugins: {
-    //   SplashScreen: {
-    //     launchShowDuration: 3000, // Duración en milisegundos
-    //     launchAutoHide: true,
-    //     backgroundColor: "#ffffff", // Color de fondo
-    //     androidSplashResourceName: "splash", // Nombre de tu recurso splash
-    //     showSpinner: false
-    //   }
-    // }
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 3000,
+      backgroundColor: '#52092f', // Color de fondo en hexadecimal
+      launchAutoHide: true,
+      androidScaleType: 'CENTER_CROP',
+      showSpinner: false
+    }
+  }
   };
 
 export default config;

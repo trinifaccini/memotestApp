@@ -147,3 +147,13 @@ ion-button {
 }
 
 
+
+.square-fab {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 0 !important; /* Forzar a cuadrado */
+  background-color: yellow !important; /* Color amarillo */
+  
+  --background: yellow;
+  --box-shadow: none;
+}
