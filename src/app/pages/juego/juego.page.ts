@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { addDoc, collection, Firestore, getDocs, limit, orderBy, query } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController, Platform } from '@ionic/angular';
 import { where } from 'firebase/firestore/lite';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { users } from 'src/app/users';
 
@@ -15,9 +16,9 @@ import { users } from 'src/app/users';
   imports: [IonicModule, CommonModule]
 })
 
-export class GamePage {
+export class GamePage implements OnInit, OnDestroy {
 
-  level: string = '';
+  level: string | null = null ;
   images: string[] = [];
   grid: { image: string, flipped: boolean, matched: boolean }[] = [];
   timer: any;
@@ -31,13 +32,47 @@ export class GamePage {
   isLoadingScores = false;
   users = users;
 
+  private backButtonSubscription: Subscription;
+
   easyImages = ['assets/buttons/animals/1.png', 'assets/buttons/animals/2.png', 'assets/buttons/animals/3.png'];
   mediumImages = ['assets/buttons/tools/tools1.png', 'assets/buttons/tools/tools2.png', 'assets/buttons/tools/tools3.png', 'assets/buttons/tools/tools4.png', 'assets/buttons/tools/tools5.png'];
   hardImages = ['assets/buttons/fruits/fruits1.png', 'assets/buttons/fruits/fruits2.png', 'assets/buttons/fruits/fruits3.png', 'assets/buttons/fruits/fruits4.png', 'assets/buttons/fruits/fruits5.png', 'assets/buttons/fruits/fruits6.png', 'assets/buttons/fruits/fruits7.png', 'assets/buttons/fruits/fruits8.png'];
 
-  constructor(private firestore: Firestore, private authService :AuthService, private router: Router) {}
+  constructor(
+    private firestore: Firestore, 
+    private authService :AuthService, 
+    private router: Router, 
+    private platform: Platform,
+    private navCtrl: NavController) {
+  }
 
- 
+  ngOnInit() {
+    // Inicializa el comportamiento personalizado del botón "atrás"
+    // this.initializeBackButtonCustomHandler();
+  }
+
+  ngOnDestroy() {
+    // Limpia la suscripción al botón "atrás" al destruir el componente
+    // if (this.backButtonSubscription) {
+    //   this.backButtonSubscription.unsubscribe();
+    // }
+  }
+
+  // private initializeBackButtonCustomHandler(): void {
+  //   // Configura el botón "atrás" con una prioridad alta
+  //   this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, () => {
+  //     // Verifica en qué página estás actualmente
+  //     if (this.router.url === '/') {
+  //       // Si estás en la página específica, usa NavController para volver
+  //       this.navCtrl.back();
+  //     } else {
+  //       // Si no es la página controlada, redirige a la raíz u otra página
+  //       this.navCtrl.navigateRoot('/home');
+  //     }
+  //   });
+  // }
+
+
   selectLevel(level: string) {
     this.level = level;
     this.setupGame();
@@ -68,6 +103,13 @@ export class GamePage {
     this.grid = this.images.map(image => ({ image, flipped: false, matched: false }));
 
     this.startTimer();
+  }
+
+  goBack(){
+    this.isPlaying = false;
+    this.level = null;
+    this.timeElapsed = 0;
+    this.pairsFound = 0;
   }
 
   shuffle(array: any[]) {
@@ -125,7 +167,6 @@ export class GamePage {
       date: new Date(),
       user: users.find(user => user.email === this.authService.getCurrentUserEmail()).perfil
     });
-    this.loadHighscores();
   }
 
   async loadHighscores() {
@@ -137,7 +178,10 @@ export class GamePage {
     this.highscores = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      if (data && data['time'] !== undefined && data['date'] && data['level'] == this.level) {
+
+      console.log(data)
+      console.log(this.level)
+      if (data['level'] == this.level) {
         this.highscores.push(data);
       } else {
         console.warn('Datos de puntaje faltantes o inválidos:', data);
