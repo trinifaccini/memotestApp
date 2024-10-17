@@ -16,7 +16,7 @@ import { users } from 'src/app/users';
   imports: [IonicModule, CommonModule]
 })
 
-export class GamePage implements OnInit, OnDestroy {
+export class GamePage {
 
   level: string | null = null ;
   images: string[] = [];
@@ -45,32 +45,6 @@ export class GamePage implements OnInit, OnDestroy {
     private platform: Platform,
     private navCtrl: NavController) {
   }
-
-  ngOnInit() {
-    // Inicializa el comportamiento personalizado del botón "atrás"
-    // this.initializeBackButtonCustomHandler();
-  }
-
-  ngOnDestroy() {
-    // Limpia la suscripción al botón "atrás" al destruir el componente
-    // if (this.backButtonSubscription) {
-    //   this.backButtonSubscription.unsubscribe();
-    // }
-  }
-
-  // private initializeBackButtonCustomHandler(): void {
-  //   // Configura el botón "atrás" con una prioridad alta
-  //   this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, () => {
-  //     // Verifica en qué página estás actualmente
-  //     if (this.router.url === '/') {
-  //       // Si estás en la página específica, usa NavController para volver
-  //       this.navCtrl.back();
-  //     } else {
-  //       // Si no es la página controlada, redirige a la raíz u otra página
-  //       this.navCtrl.navigateRoot('/home');
-  //     }
-  //   });
-  // }
 
 
   selectLevel(level: string) {
@@ -163,28 +137,26 @@ export class GamePage implements OnInit, OnDestroy {
     await addDoc(scoresCollection, {
       // user: this.authService.currentUserSig().email,
       time: this.timeElapsed,
-      level: this.level,
+      level: this.level.toString(),
       date: new Date(),
       user: users.find(user => user.email === this.authService.getCurrentUserEmail()).perfil
     });
   }
 
   async loadHighscores() {
+
+    console.log(this.level)
     this.isLoadingScores = true;  // Empieza a cargar
     const scoresCollection = collection(this.firestore, 'scores');
-    const q = query(scoresCollection, orderBy('time', 'asc'), limit(5));
+    const q = query(scoresCollection, orderBy('time', 'asc'));
     const querySnapshot = await getDocs(q);
     
     this.highscores = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-
-      console.log(data)
-      console.log(this.level)
-      if (data['level'] == this.level) {
+      if (data['level'] == this.level && this.highscores.length < 5) {
         this.highscores.push(data);
-      } else {
-        console.warn('Datos de puntaje faltantes o inválidos:', data);
+        console.log(data)
       }
     });
     this.isLoadingScores = false;  // Termina de cargar
@@ -195,7 +167,8 @@ export class GamePage implements OnInit, OnDestroy {
     this.isModalOpen = true;
   }
 
-  logout() { 
+  logout() {
+    this.timer = 0;
     this.authService.logout()
     this.router.navigateByUrl('/login')
   }

@@ -22,7 +22,7 @@ export class SplashPage implements OnInit {
   
       setTimeout(() => {
         this.router.navigateByUrl('/login');
-      }, 5000);
+      }, 6000);
     }
   
 }
